@@ -18,6 +18,10 @@
                     >Messages</a>
                 </li>
             </ng-container>
+            <li class="nav-item">
+                <a class="nav-link" routerLink='/errors' routerLinkActive='active'
+                >Errors</a>
+            </li>
         </ul>   
         <!-- async can automatically unsubscribe  app component if not gonna use-->
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
