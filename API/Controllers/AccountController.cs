@@ -22,14 +22,15 @@ namespace API.Controllers
             _tokenService = tokenService;
             _context = context;
         }
-        
+
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken.");
             using var hmac = new HMACSHA512();
             /*is a type of keyed hash algorithm that is constructed from the SHA-512 hash function and used as a Hash-based Message Authentication Code (HMAC). The HMAC process mixes a secret key with the message data and hashes the result. The hash value is mixed with the secret key again, and then hashed a second time*/
-            var user = new AppUser{
+            var user = new AppUser
+            {
                 UserName = registerDto.Username.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key
@@ -48,23 +49,25 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _context.Users
+            .Include(p => p.Photos)
             .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
             if (user == null) return Unauthorized("Invalid username");
-            
+
             using var hmac = new HMACSHA512(user.PasswordSalt);
-            
+
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
-            for (int i =0; i< computedHash.Length; i++)
+            for (int i = 0; i < computedHash.Length; i++)
             {
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid Password");
             }
-                 return new UserDto
+            return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
-             }
+        }
         private async Task<bool> UserExists(string username)
         {
             return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
