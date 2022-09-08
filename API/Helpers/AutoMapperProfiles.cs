@@ -21,6 +21,7 @@ namespace API.Helpers
             CreateMap<Photo, PhotoDto>();
             CreateMap<MemberUpdateDto, AppUser>();
             CreateMap<RegisterDto, AppUser>();
+           // CreateMap<MemberDto, MemberDto>(); //suggested by postman 500 error
         }
     }
 }
