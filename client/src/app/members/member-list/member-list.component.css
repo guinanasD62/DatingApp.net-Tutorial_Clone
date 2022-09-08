@@ -1,0 +1,19 @@
+input{
+    font-weight: 300;
+    font-size: small;
+    padding: 15px;
+
+}
+select{
+    font-weight: 300;
+    font-size: small;
+    padding: 5px;
+}
+button{  
+    font-size: 12px;
+    padding: 5px;
+}
+
+div.container{
+    padding: 2px;  
+}
