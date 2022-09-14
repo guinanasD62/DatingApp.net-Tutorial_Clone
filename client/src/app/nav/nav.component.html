@@ -16,6 +16,10 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink='/messages' routerLinkActive='active'
                     >Messages</a>
+                </li> <!-- structural Custom directives || *appNameDirectives -->
+                <li *appHasRole='["Admin","Moderator"]' class="nav-item">
+                    <a class="nav-link" routerLink='/admin' routerLinkActive='active'
+                    >Admin</a>
                 </li>
             </ng-container>
             <li class="nav-item">
@@ -26,7 +30,7 @@
         <!-- async can automatically unsubscribe  app component if not gonna use-->
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
             <img src="{{user.photoUrl  || './assets/user.png'}}" alt="{{user.username}}">
-            <a class="dropdown-toggle text-align ml-3" dropdownToggle>Welcome {{user.knownAs | titlecase}}</a>
+            <a class="dropdown-toggle text-align ml-3" dropdownToggle>Welcome {{user.knownAs || user.username | titlecase}}</a>
             <div class="dropdown-menu mt-3" *dropdownMenu> <!-- * is a structural directive; mt = marginTop -->
                 <a routerLink="/member/edit" class="dropdown-items"> Edit Profile</a>
                 <div class="dropdown-divider"></div>
