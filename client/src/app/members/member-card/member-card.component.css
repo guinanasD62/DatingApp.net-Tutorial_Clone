@@ -38,7 +38,7 @@
 .btn {
     font-size: 0.8em;
     padding: 0.9em;    
-    float: left  
+    float: left;
     }
 
     @keyframes fa-blink {

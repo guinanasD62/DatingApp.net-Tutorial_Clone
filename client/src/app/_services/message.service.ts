@@ -9,17 +9,16 @@ import { Message } from '../_models/message';
 import { User } from '../_models/user';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
   baseUrl = environment.apiUrl;
-  hubUrl = environment.apiUrl;
+  hubUrl = environment.hubUrl;
   private hubConnection: HubConnection;
   private messageThreadSource = new BehaviorSubject<Message[]>([]);
   messageThread$ = this.messageThreadSource.asObservable();
-  
+
   constructor(private http: HttpClient) { }
 
   createHubConnection(user: User, otherUsername: string) {
@@ -68,7 +67,6 @@ export class MessageService {
     return getPaginatedResult<Message[]>(this.baseUrl + 'messages', params, this.http);
   }
 
-  
   getMessageThread(username: string) {
     return this.http.get<Message[]>(this.baseUrl + 'messages/thread/' + username);
   }
