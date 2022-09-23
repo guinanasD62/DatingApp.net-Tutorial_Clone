@@ -11,9 +11,10 @@ namespace API.Data
     public class DataContext : IdentityDbContext<AppUser, AppRole, int,
         IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
-    {
+    {       
         public DataContext(DbContextOptions options) : base(options)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//suggested in answer 255
         }
 
         public DbSet<UserLike> Likes { get; set; }
@@ -23,7 +24,7 @@ namespace API.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder); //configuring relationships
+            base.OnModelCreating(builder);
 
             builder.Entity<Group>()
                 .HasMany(x => x.Connections)

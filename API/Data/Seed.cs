@@ -2,6 +2,7 @@ using System.Text.Json;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace API.Data
 {
@@ -13,7 +14,8 @@ namespace API.Data
             if (await userManager.Users.AnyAsync()) return;
 
             var userData = await System.IO.File.ReadAllTextAsync("Data/UserSeedData.json");
-            var users = JsonSerializer.Deserialize<List<AppUser>>(userData);
+            //var users = JsonSerializer.Deserialize<List<AppUser>>(userData);
+            var users = JsonConvert.DeserializeObject<List<AppUser>>(userData);//suggested answer in 91/255
              if (users == null) return;
 
              var roles = new List<AppRole>
